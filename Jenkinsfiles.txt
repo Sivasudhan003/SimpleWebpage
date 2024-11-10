@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+    environment {
+        DOCKER_IMAGE = '<your-dockerhub-username>/simple-webpage:latest'
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/<your-username>/<your-repo>.git', branch: 'main'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build(DOCKER_IMAGE)
+                }
+            }
+        }
+        stage('Push Image to Docker Hub') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                        docker.image(DOCKER_IMAGE).push()
+                    }
+                }
+            }
+        }
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    // Replace image in deployment.yaml
+                    sh "sed -i 's|<your-dockerhub-username>/simple-webpage:latest|${DOCKER_IMAGE}|g' deployment.yaml"
+                    // Apply the Kubernetes deployment
+                    sh "kubectl apply -f deployment.yaml"
+                }
+            }
+        }
+    }
+}

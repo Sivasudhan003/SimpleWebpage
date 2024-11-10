@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-webpage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simple-webpage
+  template:
+    metadata:
+      labels:
+        app: simple-webpage
+    spec:
+      containers:
+      - name: simple-webpage
+        image: <your-dockerhub-username>/simple-webpage:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-webpage-service
+spec:
+  selector:
+    app: simple-webpage
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: NodePort
