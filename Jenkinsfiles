@@ -6,7 +6,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/Sivasudhan003/SimpleWebpage.git', branch: 'main'
+                'git url: 'https://github.com/Sivasudhan003/SimpleWebpage.git', branch: 'main'
+                echo 'passed'
             }
         }
         stage('Build Docker Image') {
