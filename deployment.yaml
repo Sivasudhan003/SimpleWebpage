@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: simple-webpage
-        image: <your-dockerhub-username>/simple-webpage:latest
+        image: Sivasudhan003/simple-webpage:latest
         ports:
         - containerPort: 80
 ---
